@@ -242,7 +242,11 @@ public class XPathParser {
 
   private Object evaluate(String expression, Object root, QName returnType) {
     try {
-		//最终合流到这儿，直接调用XPath.evaluate
+      /**
+       * 最终合流到这儿，直接调用XPath.evaluate
+       *
+       * {@link #evalString(Object, String)} evalString 比较特殊，他调用的是 PropertyParser.parse() 方法
+       */
       return xpath.evaluate(expression, root, returnType);
     } catch (Exception e) {
       throw new BuilderException("Error evaluating XPath.  Cause: " + e, e);

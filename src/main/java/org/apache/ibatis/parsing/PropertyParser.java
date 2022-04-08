@@ -18,10 +18,9 @@ package org.apache.ibatis.parsing;
 import java.util.Properties;
 
 /**
- * @author Clinton Begin
- */
-/**
  * 属性解析器
+ *
+ * @author Clinton Begin
  */
 public class PropertyParser {
 
@@ -31,12 +30,19 @@ public class PropertyParser {
 
   public static String parse(String string, Properties variables) {
     VariableTokenHandler handler = new VariableTokenHandler(variables);
+    // 创建 GenericTokenParser 对象，并指定其处理的占位符格式为 "${}"
     GenericTokenParser parser = new GenericTokenParser("${", "}", handler);
     return parser.parse(string);
   }
 
-  //就是一个map，用相应的value替换key
+  /**
+   * 值 token 处理器
+   * 就是一个map，用相应的value替换key
+   */
   private static class VariableTokenHandler implements TokenHandler {
+    /**
+     * <properties> 节点下的键值对，用于替换占位符
+     */
     private Properties variables;
 
     public VariableTokenHandler(Properties variables) {

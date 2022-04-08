@@ -40,18 +40,26 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 /**
- * @author Clinton Begin
- */
-/**
  * XPath解析器，用的都是JDK的类包,封装了一下，使得使用起来更方便
+ * 该对象封装了 Xpath、Document、EntityResolver 的方法
  *
+ * @author Clinton Begin
  */
 public class XPathParser {
 
+  /** Document 对象 */
   private Document document;
+
+  /** 是否开启验证 */
   private boolean validation;
+
+  /** 用于加载本地 DTD 文件 */
   private EntityResolver entityResolver;
+
+  /** mybatis-config.xml 中 <properties>标签定义的键值对集合 */
   private Properties variables;
+
+  /** Xpath对象 */
   private XPath xpath;
 
 	//一些构造函数,全部调用commonConstructor以及createDocument
@@ -241,10 +249,13 @@ public class XPathParser {
     }
   }
 
+  /**
+   * 调用 createDocument 方法之前一定要先调用 commonConstructor() 方法完成初始化
+   */
   private Document createDocument(InputSource inputSource) {
     // important: this must only be called AFTER common constructor
     try {
-		//这个是DOM解析方式
+      //这个是DOM解析方式
       DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
       factory.setValidating(validation);
 
@@ -278,6 +289,7 @@ public class XPathParser {
         public void warning(SAXParseException exception) throws SAXException {
         }
       });
+      // 加载 xml 文件
       return builder.parse(inputSource);
     } catch (Exception e) {
       throw new BuilderException("Error creating document instance.  Cause: " + e, e);
